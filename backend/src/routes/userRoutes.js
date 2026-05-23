@@ -17,11 +17,21 @@ router.post("/", async (req, res) => {
 })
 
 // listar usuários
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        const users = await User.find()
+        const user = await User.findById(req.params.id)
 
-        res.json(users)
+        if (!user) {
+            res.status(404).json({
+                message: "Usuário não encontrado"
+            })
+            return
+        }
+
+        res.status(200).json({
+            message: "Usuário encontrado",
+            user
+        })
     } catch (error) {
         res.status(500).json({
             error: error.message
