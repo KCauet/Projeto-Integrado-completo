@@ -34,9 +34,43 @@ router.delete("/:id", async (req, res) => { //“se eu quero algo variável na U
     try {
         const user = await User.findByIdAndDelete(req.params.id)
         
+        if (!user) {
+            res.status(404).json({
+                message: "Usuario não encontrado"
+            })
+            return;
+        }
         res.status(200).json({
             message: "Usuário deletado"
         })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+})
+
+// atualizar usuário
+router.put("/:id", async (req, res) => {
+    try {
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new: true}
+        );
+
+        if (!user) {
+            res.status(404).json({
+                message: "Usuario não encontrado"
+            })
+            return;
+        }
+
+        res.status(200).json({
+            message: "usuario atualizado"
+        })
+
     } catch (error) {
         res.status(500).json({
             error: error.message
