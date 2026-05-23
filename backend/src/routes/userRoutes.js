@@ -29,4 +29,19 @@ router.get("/", async (req, res) => {
     }
 })
 
+// deletar usuários
+router.delete("/:id", async (req, res) => { //“se eu quero algo variável na URL, uso :algumaCoisa”
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+        
+        res.status(200).json({
+            message: "Usuário deletado"
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+})
+
 export default router
